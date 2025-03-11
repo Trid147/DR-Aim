@@ -130,6 +130,7 @@ local UserInputService = game:GetService("UserInputService")
 local Teams = game:GetService("Teams")
 
 -- GUI
+local Baseplates = workspace.Baseplates
 
 --Off/On function
 Toggle.MouseButton1Click:Connect(function()  
@@ -159,21 +160,23 @@ local function getClosestVisiblePlayer(camera)
 	local closestPlayer = nil
 	local closestDistance = math.huge
 
-	for _, enemy in pairs(workspace:GetDescendants()) do
-		if enemy:IsA("Model") then
-			if enemy and enemy:FindFirstChild("Head") and enemy:FindFirstChild("Humanoid") and enemy ~= player.Character then
-				local headPosition = enemy.Head.Position
-				local targetPosition = ray:ClosestPoint(headPosition)
-				local distance = (targetPosition - headPosition).Magnitude
+	for _, plate in pairs(Baseplates:GetChildren()) do
+		for _, enemy in pairs(plate.CenterBaseplate.Animals:GetChildren()) do
+			if enemy:IsA("Model") then
+				if enemy:FindFirstChild("Head") and enemy:FindFirstChild("Humanoid") and enemy ~= player.Character then
+				    local headPosition = enemy.Head.Position
+				    local targetPosition = ray:ClosestPoint(headPosition)
+				    local distance = (targetPosition - headPosition).Magnitude
 
-				if distance < closestDistance then
-					closestDistance = distance
-					closestPlayer = enemy
+				    if distance < closestDistance then
+					    closestDistance = distance
+					    closestPlayer = enemy
+					end
 				end
 			end
 		end
 	end
-	
+
 	return closestPlayer
 end
 
