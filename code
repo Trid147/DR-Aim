@@ -217,7 +217,8 @@ end)
 -- Connect the updateAimbot function to the RenderStepped event
 local aimbotConnection
 
-UserInputService.InputBegan:Connect(function(input)
+UserInputService.InputBegan:Connect(function(input, isTyping)
+        if isTyping then return end
 	if input.KeyCode == config.KeyToToggle then
 		if aimbotEnabled then
 			aimbotConnection:Disconnect()
